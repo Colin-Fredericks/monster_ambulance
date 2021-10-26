@@ -9,6 +9,7 @@ $(document).ready(function () {
   const data_path = 'data';
 
   // DOM locations
+  const CARDSTACK = '.card_stack';
   const CURRENT = '.current_card';
   const DISCARD = '.discards';
 
@@ -55,6 +56,7 @@ $(document).ready(function () {
   let discards = [];
 
   let cards_in_stack = 8;
+  const offset = 3;
 
   // returns a number
   function getCurrentCard() {
@@ -63,8 +65,8 @@ $(document).ready(function () {
   }
 
   function cardHTML(card) {
-    console.debug('Get HTML for...');
-    console.debug(card);
+    // console.debug('Get HTML for...');
+    // console.debug(card);
 
     let c = $('<div>');
     c.addClass('card');
@@ -115,19 +117,11 @@ $(document).ready(function () {
   }
 
   function changeCard(card, location) {
-    console.debug('New card:');
-    console.debug(card);
-    console.debug('Location:');
-    console.debug(location);
     $(location).empty();
     $(location).append(cardHTML(card));
   }
 
   function addCard(card, location) {
-    console.debug('New card:');
-    console.debug(card);
-    console.debug('Location:');
-    console.debug(location);
     $(location).append(cardHTML(card));
   }
 
@@ -141,6 +135,7 @@ $(document).ready(function () {
         header: true,
         skipEmptyLines: true,
         complete: function (results, file) {
+          console.debug('results from CSV parser:');
           console.debug(results);
 
           let deck = [];
@@ -157,6 +152,7 @@ $(document).ready(function () {
         },
       });
     });
+
   }
 
   function setUpControls() {
@@ -214,29 +210,42 @@ $(document).ready(function () {
     controlbox.append(show_all);
   }
 
-  // TODO: Check this for off-by-one errors.
   function buildStack() {
-    let temp_cards = all_cards.slice();
     let new_stack = [];
-    let card_nums = [];
+    let temp_cards = all_cards.slice();
+    // Card 0 is the hospital, we shuffle it in later.
+    temp_cards.splice(0,1);
 
-    // Start at 1 to avoid hospital. We'll put it back in later.
-    let start = 1;
-    let end = all_cards.length;
+    console.log(temp_cards);
 
-    // Create an array of numbers for all the cards except 0.
-    let cards_left = [...Array(end).keys()].map((i) => i + start);
-
-    for (let i = start; i < cards_in_stack + 4; i++) {
+    // Make an array of (cards_in_stack + 3) cards.
+    for (let i = 0; i < cards_in_stack + 3; i++) {
       let j = Math.floor(Math.random() * temp_cards.length) + 1;
-      new_stack.push(temp_cards[j]);
-      temp_cards.splice(j, 1);
+      console.log(j);
+      console.log(temp_cards[j]);
+      // Take the jth card out of temp_cards and put it on the stack.
+      new_stack.push(temp_cards.splice(j, 1)[0]);
     }
+
     // Shuffle the hospital into the last 4 cards.
     let cardspot = Math.floor(Math.random() * 4);
-    new_stack.splice(cards_in_stack + 3 - cardspot, 0, all_cards[0]);
+    new_stack.splice(new_stack.length - cardspot, 0, all_cards[0]);
+
+    console.debug(new_stack);
 
     return new_stack;
+  }
+
+  // Visually spread cards so they look like a stack.
+  function spreadCards(location){
+
+    // Spread out the discard slightly
+    $(location).children().each(function(i, e){
+      $(e).css('position', "absolute");
+      $(e).css('top', String(offset * i) + "px");
+      $(e).css('left', String(offset * i) + "px");
+    });
+
   }
 
   // Just shows a set of blank card backs.
@@ -246,52 +255,55 @@ $(document).ready(function () {
     console.debug(display_stack);
 
     // Spread the cards just a little.
-    let offset = 3;
     display_stack.forEach(function(e, i){
       e.css('position', "absolute");
       e.css('top', String(offset * i) + "px");
       e.css('left', String(offset * i) + "px");
     });
     display_stack.forEach(function(e, i){
-      $('.card_stack').append(e);
+      $(CARDSTACK).append(e);
     });
+
+    spreadCards(CARDSTACK);
 
     // Move the center card over so we can see it.
     let old_width = Number($(CURRENT).css('width').slice(0, -2));
-    $('.card_stack').css('width', String(old_width + offset * display_stack.length) + "px");
+    $(CARDSTACK).css('width', String(old_width + offset * display_stack.length) + "px");
 
   }
+
+  // Move the current card into discard, and put the top card of the
+  // stack into the current card slot.
+  function drawCard(){
+    console.debug('draw card');
+    let current_card = all_cards[Number(getCurrentCard())];
+    discards.push(current_card);
+    let new_card = stack.pop();
+    changeCard(new_card, CURRENT);
+    addCard(current_card, DISCARD);
+    $(CARDSTACK + ' > div:last-child').remove();
+    let cards_left = $(CARDSTACK).children().length;
+
+    // Move the center card over so we can see it.
+    let old_width = Number($(CURRENT).css('width').slice(0, -2));
+    $(CARDSTACK).css('width', String(old_width + offset * cards_left) + "px");
+
+    spreadCards(DISCARD);
+
+  }
+
+  // TODO: Function for saving a card for later use.
+  // TODO: Function for backing up one card - current to stack, discard to current.
+  // TODO: Function for looking at the discard stack.
 
   function addListeners() {
     console.debug('Adding listeners');
 
-    // When someone clicks on the stack, remove the topmost card
-    // and add the lowest-number card to the current_card space.
-    let draw = $('.draw_button');
-    draw.on('click', function(){
-      console.debug('draw card');
-      let current_card = all_cards[Number(getCurrentCard())];
-      discards.push(current_card);
-      let new_card = stack.pop();
-      changeCard(new_card, CURRENT);
-      addCard(current_card, DISCARD);
-      $('.card_stack > div:last-child').remove();
-      let cards_left = $('.card_stack > div').length;
+    // Draw when we click on a draw button or on the card stack.
+    let draw = $('.draw_button, ' + CARDSTACK);
+    draw.on('click', function(){drawCard()});
 
-      // Move the center card over so we can see it.
-      let offset = 3;
-      let old_width = Number($(CURRENT).css('width').slice(0, -2));
-      $('.card_stack').css('width', String(old_width + offset * cards_left) + "px");
-
-      // Spread out the discard slightly
-      $(DISCARD).children().each(function(i, e){
-        $(e).css('position', "absolute");
-        $(e).css('top', String(offset * i) + "px");
-        $(e).css('left', String(offset * i) + "px");
-      });
-    });
-
-    // Debug Control Listeners
+    // Listeners for the debug controls
     let left = $('.prev_card');
     let right = $('.next_card');
     let i = Number(getCurrentCard());
