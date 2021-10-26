@@ -3,11 +3,15 @@
 $(document).ready(function () {
   'use strict';
 
+  // Folders
   const image_folder = 'card_images';
   const card_data_file = 'card_data.csv';
   const data_path = 'data';
+
+  // DOM locations
   const CURRENT = '.current_card';
   const DISCARD = '.discards';
+
   const icon_translator = {
     none: 'noun_ellipsis_150426.png',
     Insec: 'noun_droplets_421424.png',
@@ -45,11 +49,14 @@ $(document).ready(function () {
     number: '-1',
   });
 
+  // Arrays of Cards
   let all_cards = [];
   let stack = [];
-  let cards_in_stack = 8;
   let discards = [];
 
+  let cards_in_stack = 8;
+
+  // returns a number
   function getCurrentCard() {
     let current_card_html = $('.current_card .card');
     return current_card_html.attr('data-number');
@@ -116,6 +123,14 @@ $(document).ready(function () {
     $(location).append(cardHTML(card));
   }
 
+  function addCard(card, location) {
+    console.debug('New card:');
+    console.debug(card);
+    console.debug('Location:');
+    console.debug(location);
+    $(location).append(cardHTML(card));
+  }
+
   // Loads card data from CSV file
   function loadCards(filename) {
     console.debug('Loading card data.');
@@ -171,6 +186,14 @@ $(document).ready(function () {
       }
     });
 
+    // Regular controls
+    let draw = $('<button>');
+    draw.addClass('draw_button');
+    draw.text('Draw card');
+    controlbox.append(draw);
+
+
+
     // Debug Controls
     let left = $('<button>');
     let right = $('<button>');
@@ -183,9 +206,11 @@ $(document).ready(function () {
     show_all.addClass('show_all');
     show_all.text('Show all cards');
 
+    controlbox.append("<br/><br/>");
+    controlbox.append('Debug Controls:');
+    controlbox.append("<br/>");
     controlbox.append(left);
     controlbox.append(right);
-    controlbox.append("<br/>");
     controlbox.append(show_all);
   }
 
@@ -232,7 +257,7 @@ $(document).ready(function () {
     });
 
     // Move the center card over so we can see it.
-    let old_width = Number($(".current_card").css('width').slice(0, -2));
+    let old_width = Number($(CURRENT).css('width').slice(0, -2));
     $('.card_stack').css('width', String(old_width + offset * display_stack.length) + "px");
 
   }
@@ -242,6 +267,29 @@ $(document).ready(function () {
 
     // When someone clicks on the stack, remove the topmost card
     // and add the lowest-number card to the current_card space.
+    let draw = $('.draw_button');
+    draw.on('click', function(){
+      console.debug('draw card');
+      let current_card = all_cards[Number(getCurrentCard())];
+      discards.push(current_card);
+      let new_card = stack.pop();
+      changeCard(new_card, CURRENT);
+      addCard(current_card, DISCARD);
+      $('.card_stack > div:last-child').remove();
+      let cards_left = $('.card_stack > div').length;
+
+      // Move the center card over so we can see it.
+      let offset = 3;
+      let old_width = Number($(CURRENT).css('width').slice(0, -2));
+      $('.card_stack').css('width', String(old_width + offset * cards_left) + "px");
+
+      // Spread out the discard slightly
+      $(DISCARD).children().each(function(i, e){
+        $(e).css('position', "absolute");
+        $(e).css('top', String(offset * i) + "px");
+        $(e).css('left', String(offset * i) + "px");
+      });
+    });
 
     // Debug Control Listeners
     let left = $('.prev_card');
