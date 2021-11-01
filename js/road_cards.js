@@ -210,6 +210,7 @@ $(document).ready(function () {
     controlbox.append(show_all);
   }
 
+  // Makes the draw pile, which is an array of cards.
   function buildStack() {
     let new_stack = [];
     let temp_cards = all_cards.slice();
@@ -275,7 +276,7 @@ $(document).ready(function () {
   // Move the current card into discard, and put the top card of the
   // stack into the current card slot.
   function drawCard(){
-    console.debug('draw card');
+    // console.debug('draw card');
     let current_card = all_cards[Number(getCurrentCard())];
     discards.push(current_card);
     let new_card = stack.pop();
