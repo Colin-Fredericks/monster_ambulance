@@ -18,8 +18,8 @@ $(document).ready(function () {
     Insec: 'noun_droplets_421424.png',
     Break: 'noun_explosion_777697.png',
     Exh: 'noun_sleep_1594499.png',
-    'Doom+': 'noun_Dice_1647827.png',
-    DoomUp: 'noun_Up Up_3797452.png',
+    '+Dice': 'noun_Dice_1647827.png',
+    StepUp: 'noun_Up Up_3797452.png',
     "Driver's choice": 'noun_direction_4139407.png',
   };
   const alt_translator = {
@@ -27,8 +27,8 @@ $(document).ready(function () {
     Insec: 'Insecurity steps up',
     Break: 'Breakdown steps up',
     Exh: 'Exhaustion steps up',
-    'Doom+': 'Add d6 to Crisis pool',
-    DoomUp: 'One Crisis die steps up',
+    '+Dice': 'Add d6 to the Emergency',
+    StepUp: 'One Emergency die steps up',
     "Driver's choice": "Driver's choice",
   };
 

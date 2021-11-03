@@ -3,49 +3,49 @@ Grendel's Mother Memorial Hospital,none,np_hospital_3637502_000000.png,Home swee
 The Wrong Hospital!,Insec,np_hospital_3127218_000000.png,How bad are they doing back there? I only ask because…
 Wide streets,none,np_street_104297_000000.png,"Wide streets, full tank, can't lose."
 Municipal park,Exh,np_park_2215999_000000.png,Oh hey I took my kids here last week!
-Closed municipal park,Doom+,noun_Chain_3120674.png,The only thing keeping the gate shut is cheap padlocks. Hit the gas.
+Closed municipal park,+Dice,noun_Chain_3120674.png,The only thing keeping the gate shut is cheap padlocks. Hit the gas.
 Small park with fountain,Break,np_playground_1037934_000000.png,The ambulance is not amphibious. Yet.
-Parade,Doom+,np_dragon-dance_111562_000000.png,You think we can catch a ride on a balloon?
-Road closed for movie filming,DoomUp,np_clapper_1339191_000000.png,I didn't know they were making a sequel!
+Parade,+Dice,np_dragon-dance_111562_000000.png,You think we can catch a ride on a balloon?
+Road closed for movie filming,StepUp,np_clapper_1339191_000000.png,I didn't know they were making a sequel!
 Road closed for construction,Break,np_construction_1960274_000000.png,Ok that's a bigger pothole than I anticipated.
 Moose on the loose,Break,np_moose_1081931_000000.png,Those things are bigger than I thought.
-Awful goose,DoomUp,np_goose_1610453_000000.png,We are outmatched.
-Granny crossing the street,Doom+,np_grandmother_1026895_000000.png,"Hi, Mrs. Tentaclatos! Lovely day! Do you need a hand? You sure?"
+Awful goose,StepUp,np_goose_1610453_000000.png,We are outmatched.
+Granny crossing the street,+Dice,np_grandmother_1026895_000000.png,"Hi, Mrs. Tentaclatos! Lovely day! Do you need a hand? You sure?"
 Kaiju crossing,Driver's choice,np_monster_24992_000000.png,"Everyone's buckled up, right?"
-Funeral procession,Doom+,np_hearse_90244_000000.png,(moment of silence)
+Funeral procession,+Dice,np_hearse_90244_000000.png,(moment of silence)
 Laundry line,Insec,np_laundry_2032487_000000.png,Does one of these shorts have an address in it? I gotta send these back later.
 Maze of one-way streets,Exh,np_maze_2664933_000000.png,I am so lost.
 Citizen in distress,none,np_cyclops_60204_000000.png,Do we have room for one more?
-Bridge up for boat,Doom+,np_boat-bridge_282882_000000.png,Airborne in 3... 2... 1...
+Bridge up for boat,+Dice,np_boat-bridge_282882_000000.png,Airborne in 3... 2... 1...
 Falling debris,Break,np_cliff-warning_3236_000000.png,Never just one rock.
 High-speed rotary,Break,np_roundabout_2869575_000000.png,This thing is way easier since they banked the curve.
 The Interchanger,Insec,np_cloverleaf-interchange_3092305_000000.png,"Third exit from the left, upper branch…? No, lower!"
-Speed humps,DoomUp,np_uneven-road_131465_000000.png,Hit these too hard and we'll flip right over.
+Speed humps,StepUp,np_uneven-road_131465_000000.png,Hit these too hard and we'll flip right over.
 Traffic Jam,Break,np_traffic_924177_000000.png,Do! You! Not! Hear! The! Siren? MOVE!
 Broken traffic lights,Exh,np_traffic_2068933_000000.png,I need more eyes.
-Magic roundabout,Doom+,np_ways_329826_000000.png,"Right, Left, Right"
+Magic roundabout,+Dice,np_ways_329826_000000.png,"Right, Left, Right"
 Crowded tunnel,Break,np_tunnel_1113593_000000.png,Maybe if I can get up the wall a little...
-Dark tunnel,DoomUp,np_tunnel_1265321_000000.png,Even the headlights don't help much...
+Dark tunnel,StepUp,np_tunnel_1265321_000000.png,Even the headlights don't help much...
 Flooded street,Break,np_flood_752_000000.png,Time for amphibious mode.
-Dense Fog,Doom+,np_fog_2563314_000000.png,Switching to radar visuals.
-Car crash,Doom+,np_accident_3371885_000000.png,"Eesh, that looks bad-- STOP RUBBERNECKING!"
+Dense Fog,+Dice,np_fog_2563314_000000.png,Switching to radar visuals.
+Car crash,+Dice,np_accident_3371885_000000.png,"Eesh, that looks bad-- STOP RUBBERNECKING!"
 Strange lights,Exh,np_ufo_716861_000000.png,Don't pay attention. Don't pay attention. Don't pay attention.
 Tight alley,Break,np_street_3635500_000000.png,We're gonna lose some paint on this one.
 Hairpin turn,Break,np_hairpin-bend_1993416_000000.png,Time for some blue sparks.
 Non-Euclidean crossroads,Exh,np_impossible-triangle_3612723_000000.png,Keep your focus. Take the left-up exit and throw it into 2nd reverse.
 Flower market,Insec,np_flower-pots_999971_000000.png,Oh what a lovely GET OUT OF THE ROAD!
-Detour for police action,Doom+,np_police-car_693907_000000.png,"And of course there's only one ""detour"" sign…"
-Cross the island,Doom+,np_bridge_1792117_000000.png,You're sure this is the fastest route?
-Railroad crossing,Doom+,np_railroad-barrier_3404816_000000.png,"Look, this is one red I don't run."
-School zone,Doom+,np_school_1715530_000000.png,"Hi, kids! Oh, that's nice! Hey, did your teacher ever tell you what to do when you see an ambulance coming?"
-Inexplicable unpaved road,DoomUp,np_loose-chippings_1629012_000000.png,Why am I on a dirt road. HOW.
+Detour for police action,+Dice,np_police-car_693907_000000.png,"And of course there's only one ""detour"" sign…"
+Cross the island,+Dice,np_bridge_1792117_000000.png,You're sure this is the fastest route?
+Railroad crossing,+Dice,np_railroad-barrier_3404816_000000.png,"Look, this is one red I don't run."
+School zone,+Dice,np_school_1715530_000000.png,"Hi, kids! Oh, that's nice! Hey, did your teacher ever tell you what to do when you see an ambulance coming?"
+Inexplicable unpaved road,StepUp,np_loose-chippings_1629012_000000.png,Why am I on a dirt road. HOW.
 Shopping district,Insec,np_shopping-bags_1582713_000000.png,"Folks, I think we may have a shopping cart on the roof for the rest of the trip."
-Two workers carrying a big sheet of plate glass,DoomUp,Plate_Glass.png,I have always wanted to do this.
+Two workers carrying a big sheet of plate glass,StepUp,Plate_Glass.png,I have always wanted to do this.
 Livestock market,Insec,np_goat_2876144_000000.png,I didn't know you could bring one of those within city limits.
-Incomplete highway,DoomUp,np_under-construction_2115552_000000.png,Oh you MUST be kidding me.
+Incomplete highway,StepUp,np_under-construction_2115552_000000.png,Oh you MUST be kidding me.
 Arboretum,Break,np_trees_1421037_000000.png,I bet the trees are still angry from last time.
 Shopping mall,Insec,np_mall_2229850_000000.png,"Look, it's the shortest route, ok?"
 Winding street,Exh,np_winding-road_716841_000000.png,Get the nausea meds out.
-Annoying lack of street signs,Doom+,np_streets_1645285_000000.png,Where the heck is Transistor Ave? Did I miss it?
+Annoying lack of street signs,+Dice,np_streets_1645285_000000.png,Where the heck is Transistor Ave? Did I miss it?
 Twelve-way intersection,Exh,np_arrows_200579_000000.png,This thing REALLY needs some lights.
-Road clogged with debris,DoomUp,np_debris-management_2009250_000000.png,We got some turbulence coming up here.
+Road clogged with debris,StepUp,np_debris-management_2009250_000000.png,We got some turbulence coming up here.
