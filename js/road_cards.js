@@ -214,14 +214,15 @@ $(document).ready(function () {
   function buildStack() {
     let new_stack = [];
     let temp_cards = all_cards.slice();
-    // Card 0 is the hospital, we shuffle it in later.
+    // Card 0 is the hospital, remove it. We shuffle it in later.
     temp_cards.splice(0,1);
 
     console.log(temp_cards);
 
     // Make an array of (cards_in_stack + 3) cards.
     for (let i = 0; i < cards_in_stack + 3; i++) {
-      let j = Math.floor(Math.random() * temp_cards.length) + 1;
+      console.log(temp_cards.length);
+      let j = Math.floor(Math.random() * temp_cards.length);
       console.log(j);
       console.log(temp_cards[j]);
       // Take the jth card out of temp_cards and put it on the stack.
@@ -229,8 +230,9 @@ $(document).ready(function () {
     }
 
     // Shuffle the hospital into the last 4 cards.
+    // Reminder: this is a stack, "last 4" is spots 0-3.
     let cardspot = Math.floor(Math.random() * 4);
-    new_stack.splice(new_stack.length - cardspot, 0, all_cards[0]);
+    new_stack.splice(cardspot, 0, all_cards[0]);
 
     console.debug(new_stack);
 
@@ -253,7 +255,7 @@ $(document).ready(function () {
   function showStack() {
     // Make a bunch of blank cards.
     let display_stack = Array.from({length:stack.length}).map(x => cardHTML(blankCard));
-    console.debug(display_stack);
+    // console.debug(display_stack);
 
     // Spread the cards just a little.
     display_stack.forEach(function(e, i){
@@ -344,7 +346,7 @@ $(document).ready(function () {
     setUpControls();
     stack = buildStack();
     console.debug();
-    changeCard(stack[0], CURRENT);
+    changeCard(stack.pop(), CURRENT);
     showStack();
     addListeners();
   }
