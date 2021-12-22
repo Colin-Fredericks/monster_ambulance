@@ -13,6 +13,9 @@ $(document).ready(function () {
   const CURRENT = '.current_card';
   const DISCARD = '.discards';
 
+  // Card play definitions
+  const cards_in_stack = 6;
+
   const icon_translator = {
     none: 'noun_ellipsis_150426.png',
     Insec: 'noun_droplets_421424.png',
@@ -55,7 +58,6 @@ $(document).ready(function () {
   let stack = [];
   let discards = [];
 
-  let cards_in_stack = 8;
   const offset = 3;
 
   // returns a number
@@ -304,7 +306,7 @@ $(document).ready(function () {
 
     // Draw when we click on a draw button or on the card stack.
     let draw = $('.draw_button, ' + CARDSTACK);
-    draw.on('click', function(){drawCard()});
+    draw.on('click', function(){drawCard();});
 
     // Listeners for the debug controls
     let left = $('.prev_card');
