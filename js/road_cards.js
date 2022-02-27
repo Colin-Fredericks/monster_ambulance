@@ -14,7 +14,7 @@ $(document).ready(function () {
   const DISCARD = '.discards';
 
   // Card play definitions
-  const cards_in_stack = 6;
+  const cards_in_stack = 4;
 
   const icon_translator = {
     none: 'noun_ellipsis_150426.png',
