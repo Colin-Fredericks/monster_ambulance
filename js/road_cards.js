@@ -42,15 +42,17 @@ $(document).ready(function () {
       this.flavor_text = card_object.flavor_text;
       this.image = card_object.image; // filename without folder
       this.number = card_object.number; // index
+      this.logo = card_object.logo; // only shown on blank cards
     }
   }
 
   let blankCard = new Card({
-    name: 'Monster Ambulance',
+    name: '',
     effect: '',
     flavor_text: '',
     image: '',
     number: '-1',
+    logo: 'MonAm_Logo_rotated.png'
   });
 
   // Arrays of Cards
@@ -58,7 +60,7 @@ $(document).ready(function () {
   let stack = [];
   let discards = [];
 
-  const offset = 3;
+  const offset = 5;
 
   // returns a number
   function getCurrentCard() {
@@ -73,7 +75,6 @@ $(document).ready(function () {
     let c = $('<div>');
     c.addClass('card');
     c.attr('data-number', card.number);
-    c.css('background-color','white');
 
     let hdiv = $('<div>');
     hdiv.addClass('header_div');
@@ -99,6 +100,14 @@ $(document).ready(function () {
       let i = $('<img>');
       i.attr('src', image_folder + '/' + card.image);
       i.attr('alt', '');
+      imgdiv.append(i);
+    }
+
+    if(card.logo){
+      let i = $('<img>');
+      i.attr('src', image_folder + '/' + card.logo);
+      i.attr('alt', 'Blank card');
+      i.addClass('blank_card');
       imgdiv.append(i);
     }
 
@@ -129,7 +138,7 @@ $(document).ready(function () {
   }
 
   function stackForward(){
-    console.debug('move stack forward');
+    // console.debug('move stack forward');
     // If there's no stack left, we can't go back and we're done.
     if(stack.length === 0){
       return false;
@@ -160,7 +169,7 @@ $(document).ready(function () {
   }
 
   function stackBack(){
-    console.debug('move stack back');
+    // console.debug('move stack back');
     // If there's no discard, we can't go back and we're done.
     if(discards.length === 0){
       return false;
@@ -237,14 +246,19 @@ $(document).ready(function () {
     // visible controls
     let controlbox = $('.controls');
 
+    let back = $('<button>');
+    back.addClass('back_button');
+    back.html('&#8592; Go back');
+    controlbox.append(back);
+
     let draw = $('<button>');
     draw.addClass('draw_button');
-    draw.text('Draw card');
+    draw.html('Draw card &#8594;');
     controlbox.append(draw);
 
     let reset = $('<button>');
     reset.addClass('reset_button');
-    reset.text('Reset');
+    reset.html('Reset &#8634;');
     controlbox.append(reset);
     reset.on('click', function(){
       window.location.reload(true);
@@ -334,6 +348,7 @@ $(document).ready(function () {
       e.css('position', "absolute");
       e.css('top', String(offset * i) + "px");
       e.css('left', String(offset * i) + "px");
+      e.addClass('blank_card');
     });
     display_stack.forEach(function(e, i){
       $(CARDSTACK).append(e);

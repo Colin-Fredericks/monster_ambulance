@@ -2,21 +2,48 @@ body {
   font-family: sans-serif;
 }
 
+h1{
+  font-family: 'Chelsea Market', cursive;
+  font-size: 36pt;
+  margin-top: 0em;
+}
+
+.subheader {
+  font-size: medium;
+  margin-top: -2em;
+  margin-bottom: 2em;
+}
+
 p {
   margin: 8px 0 8px 0;
   padding-left: 4px;
   padding-right: 4px;
 }
 
-.tabletop{
+.tabletop {
   display: flex;
   flex: auto;
 }
 
+.tabletop>div {
+  margin: 4px;
+}
+
+.controls button {
+  padding: 2px 6px 2px 6px;
+  font-weight: bold;
+  margin: 2px;
+  height: 2em;
+}
+
+.card_stack .card {
+  background-color: #be9d7a;
+}
+
 .card {
   background-color: white;
-  border: 2px solid black;
-  border-radius: 4px;
+  border: 4px solid black;
+  border-radius: 8px;
   width: 250px;
   height: 375px;
   padding: 4px;
@@ -27,6 +54,10 @@ p {
 
 .card h2 {
   text-align: center;
+}
+
+.image_div img.blank_card {
+  width: 55%;
 }
 
 .showall .card {
@@ -43,6 +74,8 @@ p {
 
 .text_div p {
   font-style: italic;
+  display: inline-block;
+  padding: 8px;
 }
 
 .icon_div p {
@@ -50,6 +83,7 @@ p {
   font-weight: bold;
   font-size: small;
 }
+
 .icon_div img {
   height: 55px;
   margin-bottom: 5px;
@@ -61,10 +95,10 @@ p {
   margin-bottom: -10px;
 }
 
-.discards{
+.discards {
   position: relative;
 }
 
-.draw_button{}
+.draw_button {}
 
-.reset_button{}
+.reset_button {}
