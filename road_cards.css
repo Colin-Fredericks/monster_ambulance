@@ -14,6 +14,7 @@ p {
 }
 
 .card {
+  background-color: white;
   border: 2px solid black;
   border-radius: 4px;
   width: 250px;
@@ -46,10 +47,13 @@ p {
 
 .icon_div p {
   text-align: right;
+  font-weight: bold;
+  font-size: small;
 }
 .icon_div img {
   height: 55px;
   margin-bottom: 5px;
+  vertical-align: middle;
 }
 
 .key img {
@@ -60,3 +64,7 @@ p {
 .discards{
   position: relative;
 }
+
+.draw_button{}
+
+.reset_button{}
