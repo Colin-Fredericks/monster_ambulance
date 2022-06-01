@@ -13,6 +13,9 @@ $(document).ready(function () {
   const CURRENT = '.current_card';
   const DISCARD = '.discards';
 
+  // Card play definitions
+  const cards_in_stack = 4;
+
   const icon_translator = {
     none: 'noun_ellipsis_150426.png',
     Insec: 'noun_droplets_421424.png',
@@ -24,11 +27,11 @@ $(document).ready(function () {
   };
   const alt_translator = {
     none: 'No effect',
-    Insec: 'Insecurity steps up',
-    Break: 'Breakdown steps up',
-    Exh: 'Exhaustion steps up',
-    '+Dice': 'Add d6 to the Emergency',
-    StepUp: 'One Emergency die steps up',
+    Insec: 'Step up Insecurity',
+    Break: 'Step up Breakdown',
+    Exh: 'Step up Exhaustion',
+    '+Dice': 'Add die to the Emergency',
+    StepUp: 'Step up an Emergency die',
     "Driver's choice": "Driver's choice",
   };
 
@@ -39,15 +42,17 @@ $(document).ready(function () {
       this.flavor_text = card_object.flavor_text;
       this.image = card_object.image; // filename without folder
       this.number = card_object.number; // index
+      this.logo = card_object.logo; // only shown on blank cards
     }
   }
 
   let blankCard = new Card({
-    name: 'Monster Ambulance',
+    name: '',
     effect: '',
     flavor_text: '',
     image: '',
     number: '-1',
+    logo: 'MonAm_Logo_rotated.png'
   });
 
   // Arrays of Cards
@@ -55,13 +60,12 @@ $(document).ready(function () {
   let stack = [];
   let discards = [];
 
-  let cards_in_stack = 8;
-  const offset = 3;
+  const offset = 5;
 
   // returns a number
   function getCurrentCard() {
     let current_card_html = $('.current_card .card');
-    return current_card_html.attr('data-number');
+    return Number(current_card_html.attr('data-number'));
   }
 
   function cardHTML(card) {
@@ -71,7 +75,6 @@ $(document).ready(function () {
     let c = $('<div>');
     c.addClass('card');
     c.attr('data-number', card.number);
-    c.css('background-color','white');
 
     let hdiv = $('<div>');
     hdiv.addClass('header_div');
@@ -100,12 +103,21 @@ $(document).ready(function () {
       imgdiv.append(i);
     }
 
+    if(card.logo){
+      let i = $('<img>');
+      i.attr('src', image_folder + '/' + card.logo);
+      i.attr('alt', 'Blank card');
+      i.addClass('blank_card');
+      imgdiv.append(i);
+    }
+
     let t = $('<p>');
     t.text(card.flavor_text);
     txtdiv.append(t);
 
     if(card.effect !== ''){
       let e = $('<p>');
+      e.text(alt_translator[card.effect]);
       let icon = $('<img>');
       icon.attr('src', 'card_images/' + icon_translator[card.effect]);
       icon.attr('alt', alt_translator[card.effect]);
@@ -116,13 +128,75 @@ $(document).ready(function () {
     return c;
   }
 
-  function changeCard(card, location) {
+  function displayCard(card, location) {
     $(location).empty();
     $(location).append(cardHTML(card));
   }
 
   function addCard(card, location) {
     $(location).append(cardHTML(card));
+  }
+
+  function stackForward(){
+    // console.debug('move stack forward');
+    // If there's no stack left, we can't go back and we're done.
+    if(stack.length === 0){
+      return false;
+    }
+
+    // Move the current card into discard,
+    let current_card = all_cards[getCurrentCard()];
+    discards.push(current_card);
+    addCard(current_card, DISCARD);
+
+    // Put the top card of the stack into the current card slot.
+    let new_card = stack.pop();
+    displayCard(new_card, CURRENT);
+
+    // Remove the image of the top card on the stack.
+    $(CARDSTACK + ' > div:visible:last').hide();
+
+    // Position the center card appropriately.
+    let cards_left = $(CARDSTACK).children().length;
+    let old_width = Number($(CURRENT).css('width').slice(0, -2));
+    $(CARDSTACK).css('width', String(old_width + offset * cards_left) + "px");
+
+    // Spread out the discards so we can see all of them.
+    spreadCards(DISCARD);
+
+    console.log(stack);
+    console.log(discards);
+  }
+
+  function stackBack(){
+    // console.debug('move stack back');
+    // If there's no discard, we can't go back and we're done.
+    if(discards.length === 0){
+      return false;
+    }
+
+    // Put the current card back on top of the stack.
+    let current_card = all_cards[getCurrentCard()];
+    stack.push(current_card);
+    $(CURRENT).empty();
+    // Show that the card's back on the stack.
+    $(CARDSTACK + ' > div:hidden:first').show();
+
+    // Move the top card of the discard into the current card slot.
+    let old_card = discards.pop();
+    $(DISCARD + ' > :last').remove();
+    displayCard(old_card, CURRENT);
+
+    // Position the center card appropriately.
+    let cards_left = $(CARDSTACK).children().length;
+    let old_width = Number($(CURRENT).css('width').slice(0, -2));
+    $(CARDSTACK).css('width', String(old_width + offset * cards_left) + "px");
+
+    // Spread out the discards so we can see all of them.
+    spreadCards(DISCARD);
+
+    console.log(stack);
+    console.log(discards);
   }
 
   // Loads card data from CSV file
@@ -156,58 +230,70 @@ $(document).ready(function () {
   }
 
   function setUpControls() {
-    let controlbox = $('.controls');
 
-    function gotoNextCard(){
-      // Move the current card (if there is one) to the discard.
-      // Put the top card of the stack into the current slot.
-      // Remove the top card from the draw pile.
-    }
-    function gotoPrevCard(){
-      // Put the card in the current slot back on the draw pile.
-      // Handle visuals
-      // Handle data
-      // Move the top card of the discard (if there is one) to the current slot.
-    }
-
-    // TODO: Add keyboard controls for...
+    // keyboard controls
     document.addEventListener('keydown', function(e){
-      //   right arrow = next card
+      // right arrow = next card
       if (e.key === "ArrowRight") {
-        gotoNextCard();
+        stackForward();
       }
-      //   left arrow = go back one card
+      // left arrow = go back one card
       else if (e.key === 'ArrowLeft') {
-        gotoPrevCard();
+        stackBack();
       }
     });
 
-    // Regular controls
+    // visible controls
+    let controlbox = $('.controls');
+
+    let back = $('<button>');
+    back.addClass('back_button');
+    back.html('&#8592; Go back');
+    controlbox.append(back);
+
     let draw = $('<button>');
     draw.addClass('draw_button');
-    draw.text('Draw card');
+    draw.html('Draw card &#8594;');
     controlbox.append(draw);
 
+    let reset = $('<button>');
+    reset.addClass('reset_button');
+    reset.html('Reset &#8634;');
+    controlbox.append(reset);
+    reset.on('click', function(){
+      window.location.reload(true);
+    });
+
+    // Draw when we click on a draw button or on the card stack.
+    let draw_controls = $('.draw_button, ' + CARDSTACK);
+    draw_controls.on('click', function(){stackForward();});
+
+    // Go back when we click on a back button or the discards.
+    let back_controls = $('.back_button, ' + DISCARD);
+    back_controls.on('click', function(){stackBack();});
 
 
     // Debug Controls
-    let left = $('<button>');
-    let right = $('<button>');
+    /*
     let show_all = $('<button>');
 
-    left.addClass('prev_card');
-    left.text('Prev Card');
-    right.addClass('next_card');
-    right.text('Next Card');
     show_all.addClass('show_all');
     show_all.text('Show all cards');
 
     controlbox.append("<br/><br/>");
     controlbox.append('Debug Controls:');
     controlbox.append("<br/>");
-    controlbox.append(left);
-    controlbox.append(right);
     controlbox.append(show_all);
+
+    let show_all = $('.show_all');
+    show_all.on('click', function(){
+      console.debug('show all cards');
+      $('body').append('<div class="showall"></div>');
+      for(i=0; i < all_cards.length; i++){
+        $('.showall').append(cardHTML(all_cards[i]));
+      }
+    });
+    */
   }
 
   // Makes the draw pile, which is an array of cards.
@@ -262,6 +348,7 @@ $(document).ready(function () {
       e.css('position', "absolute");
       e.css('top', String(offset * i) + "px");
       e.css('left', String(offset * i) + "px");
+      e.addClass('blank_card');
     });
     display_stack.forEach(function(e, i){
       $(CARDSTACK).append(e);
@@ -275,69 +362,11 @@ $(document).ready(function () {
 
   }
 
-  // Move the current card into discard, and put the top card of the
-  // stack into the current card slot.
-  function drawCard(){
-    // console.debug('draw card');
-    let current_card = all_cards[Number(getCurrentCard())];
-    discards.push(current_card);
-    let new_card = stack.pop();
-    changeCard(new_card, CURRENT);
-    addCard(current_card, DISCARD);
-    $(CARDSTACK + ' > div:last-child').remove();
-    let cards_left = $(CARDSTACK).children().length;
 
-    // Move the center card over so we can see it.
-    let old_width = Number($(CURRENT).css('width').slice(0, -2));
-    $(CARDSTACK).css('width', String(old_width + offset * cards_left) + "px");
-
-    spreadCards(DISCARD);
-
-  }
 
   // TODO: Function for saving a card for later use.
   // TODO: Function for backing up one card - current to stack, discard to current.
   // TODO: Function for looking at the discard stack.
-
-  function addListeners() {
-    console.debug('Adding listeners');
-
-    // Draw when we click on a draw button or on the card stack.
-    let draw = $('.draw_button, ' + CARDSTACK);
-    draw.on('click', function(){drawCard()});
-
-    // Listeners for the debug controls
-    let left = $('.prev_card');
-    let right = $('.next_card');
-    let i = Number(getCurrentCard());
-    left.on('click', function () {
-      console.debug('go previous');
-      i = i - 1;
-      if (i < 0) {
-        i = all_cards.length - 1;
-      }
-      console.debug(i);
-      changeCard(all_cards[i], CURRENT);
-    });
-    right.on('click', function () {
-      console.debug('go next');
-      i = i + 1;
-      if (i + 1 > all_cards.length) {
-        i = 0;
-      }
-      console.debug(i);
-      changeCard(all_cards[i], CURRENT);
-    });
-
-    let show_all = $('.show_all');
-    show_all.on('click', function(){
-      console.debug('show all cards');
-      $('body').append('<div class="showall"></div>');
-      for(i=0; i < all_cards.length; i++){
-        $('.showall').append(cardHTML(all_cards[i]));
-      }
-    });
-  }
 
   async function readyGo() {
     all_cards = await loadCards(card_data_file);
@@ -346,9 +375,8 @@ $(document).ready(function () {
     setUpControls();
     stack = buildStack();
     console.debug();
-    changeCard(stack.pop(), CURRENT);
+    displayCard(stack.pop(), CURRENT);
     showStack();
-    addListeners();
   }
 
   readyGo();
